@@ -36,12 +36,12 @@ public class WhatsappWeb implements Acesso {
         caixaPesquisa.sendKeys(nomeContatoGrupo);
         WebElement contatoGrupo = this.getGrupoContato(nomeContatoGrupo);
         contatoGrupo.click();
-
+        getMensagens();
         return mensagens;
     }
 
     private WebElement getCaixaPesquisa(String pesquisarPor) {
-        return new WebDriverWait(this.webDriverManager.driver, Duration.ofSeconds(10))
+        return new WebDriverWait(this.webDriverManager.driver, Duration.ofSeconds(60))
                 .until(ExpectedConditions
                         .elementToBeClickable(By.xpath("//div[contains(@title,'Caixa de texto de pesquisa')]")));
     }
@@ -51,6 +51,16 @@ public class WhatsappWeb implements Acesso {
                 .until(ExpectedConditions
                         .elementToBeClickable(
                                 By.xpath("//*//span[@title='" + pesquisarPor + "']")));
+    }
+
+    private void getMensagens(){
+        List<WebElement> chats = this.webDriverManager.driver.findElements(By.className("message-in"));
+        for (WebElement chat : chats) {
+            List<WebElement> mensagens = chat.findElements(By.className("i0jNr"));
+            for (WebElement mensagem : mensagens) {
+                mensagem.getText();
+            }
+        }
     }
 
 }
